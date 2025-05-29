@@ -1,0 +1,178 @@
+﻿<Window x:Class="Quiz_Create.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:vm="clr-namespace:Quiz_Create.ViewModel"
+        
+        xmlns:local="clr-namespace:Quiz_Create"
+        mc:Ignorable="d"
+        Title="Quiz Typu: Zrób Se Sam" Height="450" Width="800" ResizeMode="CanMinimize">
+    <Window.Resources>
+        <vm:QuizVM x:Key="QuizVM"/>
+        <vm:CorrectCountConverter x:Key="CorrectCountConverter"/>
+        <vm:IncorrectCountConverter x:Key="IncorrectCountConverter"/>
+    </Window.Resources>
+
+    <Grid DataContext="{StaticResource QuizVM}">
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,0"
+              Background="#E76FA9">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Width="200" Height="23" Margin="10,0,10,0" 
+                  VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0">
+                <TextBox x:Name="tx_QuizName" VerticalContentAlignment="Center"
+                         Text="{Binding Path=tx_quizNameString}" MaxLength="25"/>
+                <TextBlock Text="Wpisz nazwę quizu..." IsHitTestVisible="False" 
+                           Foreground="DarkGray" Margin="5,2,0,0"
+                           VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=tx_QuizName}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+
+            <TextBlock Text="Tworzenie Quizu" FontWeight="Bold" FontSize="16"
+               VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1"/>
+
+            <Button Content="Wczytaj bazę pytań" Width="150" Command="{Binding LoadFromFile}" 
+                    Margin="0,5,10,5" HorizontalAlignment="Right" Grid.Column="2"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Background="#FFC5EA">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Margin="5,0,10,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Pytanie:" VerticalAlignment="Bottom" FontWeight="Bold" Grid.Column="0"/>
+                    <Button Content="Wyczyść i Odznacz" Width="120" Command="{Binding ClearForm}" 
+                            Margin="0,5,5,0" HorizontalAlignment="Right" Grid.Column="1"/>
+                </Grid>
+                <TextBox x:Name="QuestionTextBox" Height="80" TextWrapping="Wrap" 
+                         Margin="0,5,0,10" MaxLength="180"
+                         Text="{Binding tx_questionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Odpowiedzi, zaznacz con. 1 poprawną odpowiedź." Margin="0,5"/>
+
+                <StackPanel>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Margin="0,0,5,0" VerticalAlignment="Center" Grid.Column="0"
+                                 IsChecked="{Binding IsAnswerCorrect1, Mode=TwoWay}"/>
+                        <TextBox Height="25" Grid.Column="1" VerticalContentAlignment="Center"
+                                 Text="{Binding Path=tx_answerString1, Mode=TwoWay}" MaxLength="35"/>
+                    </Grid>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Margin="0,0,5,0" VerticalAlignment="Center" Grid.Column="0"
+                                 IsChecked="{Binding IsAnswerCorrect2, Mode=TwoWay}"/>
+                        <TextBox Height="25" Grid.Column="1" VerticalContentAlignment="Center"
+                                 Text="{Binding Path=tx_answerString2, Mode=TwoWay}" MaxLength="35"/>
+                    </Grid>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Margin="0,0,5,0" VerticalAlignment="Center" Grid.Column="0"
+                                 IsChecked="{Binding IsAnswerCorrect3, Mode=TwoWay}"/>
+                        <TextBox Height="25" Grid.Column="1" VerticalContentAlignment="Center"
+                                 Text="{Binding Path=tx_answerString3, Mode=TwoWay}" MaxLength="35"/>
+                    </Grid>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Margin="0,0,5,0" VerticalAlignment="Center" Grid.Column="0"
+                                 IsChecked="{Binding IsAnswerCorrect4, Mode=TwoWay}"/>
+                        <TextBox Height="25" Grid.Column="1" VerticalContentAlignment="Center"
+                                 Text="{Binding Path=tx_answerString4, Mode=TwoWay}" MaxLength="35"/>
+                    </Grid>
+                </StackPanel>
+
+                <Button Content="Zapisz pytanie" Command="{Binding SaveQuestion}" Margin="0,10,0,5"/>
+                <Button Content="Usuń pytanie" Command="{Binding DeleteQuestion}" Margin="0,0,0,5"/>
+                <Button Content="Zapisz bazę" Command="{Binding SavetoFile}" Height="50"/>
+            </StackPanel>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <DockPanel Grid.Row="0">
+                    <TextBlock Text="Pytania (kliknij, by edytować)" VerticalAlignment="Bottom" FontStyle="Italic" Margin="0,5,5,0"/>
+                    <Button Content="Wyczyść bazę" HorizontalAlignment="Right" Width="100" Margin="0,5,10,0"
+                            Command="{Binding ClearDatabase}"/>
+                </DockPanel>
+
+                <ListBox x:Name="QuestionsListBox" Margin="0,5,0,0" Grid.Row="1"
+                          ItemsSource="{Binding Questions}"
+                          SelectedItem="{Binding SelectedQuestion, Mode=TwoWay}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="T{0}F{1} | {2}">
+                                        <Binding Path="Answers" Converter="{StaticResource CorrectCountConverter}"/>
+
+                                        <Binding Path="Answers" Converter="{StaticResource IncorrectCountConverter}"/>
+
+                                        <Binding Path="questionString"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
